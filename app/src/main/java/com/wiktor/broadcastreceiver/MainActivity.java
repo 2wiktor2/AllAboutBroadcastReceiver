@@ -1,14 +1,20 @@
 package com.wiktor.broadcastreceiver;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,7 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String WHERE_MY_CAT_ACTION = "CAT";
     public static final String ALARM_MESSAGE = "Срочно пришлите кота!";
 
-    private MessageReceiver receiver = new MessageReceiver();
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("qwertyu", "Received: " + intent.getAction() + " " + context.toString());
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         registerBroadcastReceiver();
 
-        
+
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -42,6 +53,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView.setText("Click");
 
         sendMessage(v);
+
+
+        Intent intent = new Intent();
+        for (Field field : intent.getClass().getDeclaredFields()) {
+            int modifiers = field.getModifiers();
+            if (Modifier.isPublic(modifiers) &&
+                    Modifier.isStatic(modifiers) &&
+                    Modifier.isFinal(modifiers) &&
+                    field.getType().equals(String.class)) {
+
+                String filter = null;
+                try {
+                    filter = (String) field.get(intent);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                Log.i("qwertyu", "Registered: " + filter);
+                this.registerReceiver(new MessageReceiver(receiver), new IntentFilter(filter));
+            }
+        }
 
     }
 
@@ -72,6 +103,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.registerReceiver(receiver, new IntentFilter(
                 "android.intent.action.ACTION_POWER_CONNECTED"));
+
+        this.registerReceiver(receiver, new IntentFilter(
+                "android.intent.action.ACTION_POWER_CONNECTED"));
+
+        this.registerReceiver(receiver, new IntentFilter(
+                "miui.intent.TAKE_SCREENSHOT"));
 
     }
 }

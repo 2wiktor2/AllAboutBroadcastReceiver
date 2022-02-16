@@ -7,7 +7,17 @@ import android.widget.Toast;
 
 public class MessageReceiver extends BroadcastReceiver {
 
+    private BroadcastReceiver parent;
+
+    public MessageReceiver(BroadcastReceiver parent) {
+        this.parent = parent;
+    }
     @Override
+    public void onReceive(Context context, Intent intent) {
+        parent.onReceive(context, intent);
+    }
+
+/*    @Override
     public void onReceive(Context context, Intent intent) {
         String message = "Обнаружено сообщение "
                 + intent.getAction();
@@ -39,5 +49,5 @@ public class MessageReceiver extends BroadcastReceiver {
             Toast.makeText(context.getApplicationContext(), message,
                     Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 }
