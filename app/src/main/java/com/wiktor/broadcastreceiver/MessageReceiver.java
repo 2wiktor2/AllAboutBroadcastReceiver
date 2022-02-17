@@ -45,6 +45,8 @@ public class MessageReceiver extends BroadcastReceiver {
 
         } else if (intent.getAction().equalsIgnoreCase("android.media.VOLUME_CHANGED_ACTION")) {
 
+        } else if (intent.getAction().equalsIgnoreCase("android.media.ACTION_MEDIA_SCANNER_SCAN_FILE")) {
+
         }
     }
 }

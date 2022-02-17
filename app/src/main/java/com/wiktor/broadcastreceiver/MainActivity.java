@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 /*        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);*/
+
     }
 
     @Override
@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.registerReceiver(receiver, new IntentFilter(
                 "android.media.VOLUME_CHANGED_ACTION"));
         Log.i(LOG_TAG, CLASS_NAME + "   ---   " + "android.media.VOLUME_CHANGED_ACTION");
+
+
+        this.registerReceiver(receiver, new IntentFilter(
+                "android.media.ACTION_MEDIA_SCANNER_SCAN_FILE"));
+        Log.i(LOG_TAG, CLASS_NAME + "   ---   " + "android.media.ACTION_MEDIA_SCANNER_SCAN_FILE");
 
     }
 }
