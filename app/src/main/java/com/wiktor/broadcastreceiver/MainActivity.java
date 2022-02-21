@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Установка флага на запрет скриншота
         setFlags(false);
+
+        registerAllReceivers();
     }
 
     @Override
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 Log.i("qwertyu", "Registered: " + filter);
-                this.registerReceiver(new MessageReceiver(receiver), new IntentFilter(filter));
+                this.registerReceiver(receiver, new IntentFilter(filter));
             }
         }
     }
