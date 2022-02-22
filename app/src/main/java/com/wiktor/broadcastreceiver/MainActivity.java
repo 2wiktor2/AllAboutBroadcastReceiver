@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textView;
     private TextView textView2;
 
+
     private static final String LOG_TAG = "qwertyu";
     final String CLASS_NAME = "MainActivity";
 
